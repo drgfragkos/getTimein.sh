@@ -28,7 +28,24 @@
 #
 
 
-Example:
+Examples:
+
+./getTimein.sh list                   # Use 'list' for all available timezone options
 
 ./getTimein.sh Munich
+
+./getTimein.sh Athens
+
+./getTimein.sh New_York
+
+./getTimein.sh EST
+
+./getTimein.sh UTC
+
+./getTimein.sh GMT-0
+
+./getTimein.sh GMT-9
+
+./getTimein.sh Europe/Vienna
+
 
