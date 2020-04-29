@@ -5,6 +5,7 @@
 # Use the word "list" to see a list of known geographic regions.
 # Note that it is possible to match zone directories (regions),
 # but that only time zone files (cities) are valid specifications.
+# Note: You can use 'list' for all available timezone options: ./getTimein.sh list
 # 
 # The initial idea for the code for this script was found in the book Wicked Cool 
 # Shell Scripts. There were a few mistakes in the original code which prevented it 
