@@ -1,69 +1,71 @@
 #!/bin/bash
 
-# @drgfragkos 2019 ################################################################
-# 
-# getTimein.sh -- Shows the current time in the specified time zone or 
-# geographic zone. Without any argument, this shows UTC/GMT. 
-# Use the word "list" to see a list of known geographic regions.
-# Note that it is possible to match zone directories (regions),
-# but that only time zone files (cities) are valid specifications.
-# Note: You can use 'list' for all available timezone options: ./getTimein.sh list
-# 
-# The initial idea for the code for this script was found in the book Wicked Cool 
-# Shell Scripts. There were a few mistakes in the original code which prevented it 
-# from running succesfully. These have been corrected and the current version has 
-# also been expanded to work under MacOS and use the 'say' feature. 
-#
-# Timezones can be found here: /usr/share/zoneinfo/
-# For a list of timezones you can type: sudo systemsetup -listtimezones
-# If a particular city is not listed (e.g. under /usr/share/zoneinfo/Europe/ for 
-# Germany the capital Berlin already exists, while Munich is not present). 
-# In that case, copy the Berlin file and rename it to Munich. (Due to the fact that
-# Berlin and Munich will always belong to the exact same timezone)
-# 
-# Each file is a C library. 
-# To get the output of the file, you can use one of two commands; 'zdump' or 'file' (see examples below):
-#  > zdump /usr/share/zoneinfo/America/New_York
-#  > file /usr/share/zoneinfo/America/New_York
-#
-# Time zone database ref: 
-# https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-#
-# ANSI escape codes: https://en.wikipedia.org/wiki/ANSI_escape_code
-# more info: https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux
-# more info: http://ascii-table.com/ansi-escape-sequences-vt-100.php
-#
-###################################################################################
-#
-# Set Color values to use and the No Color value ##################################
-#  Black        0;30     Dark Gray     1;30
-#  Red          0;31     Light Red     1;31
-#  Green        0;32     Light Green   1;32
-#  Brown/Orange 0;33     Yellow        1;33
-#  Blue         0;34     Light Blue    1;34
-#  Purple       0;35     Light Purple  1;35
-#  Cyan         0;36     Light Cyan    1;36
-#  Light Gray   0;37     White         1;37
-#
+## getTimein.sh - @drgfragkos 2019 - Released under: GNU GENERAL PUBLIC LICENSE v3.0 ##############
+##                                                                                               ##
+## getTimein.sh -- Shows the current time in the specified time zone or geographic zone.         ##
+## Without any argument, this shows UTC/GMT. Use the word "list" to see a list of known          ##
+## geographic regions. Note that it is possible to match zone directories (regions), but that    ##
+## only time zone files (cities) are valid specifications.                                       ##
+## Note: You can use 'list' for all available timezone options: ./getTimein.sh list              ##
+##                                                                                               ##
+## The initial idea for the code for this script was found in the book Wicked Cool Shell Scripts.##
+## There were a few mistakes in the original code which prevented it from running succesfully.   ##
+## These have been corrected and the current version has also been expanded to work under MacOS  ##
+## and use the 'say' feature.                                                                    ##
+##                                                                                               ##
+## You may modify, reuse and distribute the code freely as long as it is referenced back         ##
+## to the author using the following line: ..based on getTimein.sh by @drgfragkos                ##
+##                                                                                               ##
+## Timezones can be found here: /usr/share/zoneinfo/                                             ##
+## For a list of timezones you can type: sudo systemsetup -listtimezones                         ##
+## If a particular city is not listed (e.g. under /usr/share/zoneinfo/Europe/ for                ##
+## Germany the capital Berlin already exists, while Munich is not present).                      ##
+## In that case, copy the Berlin file and rename it to Munich. (Due to the fact that Berlin and  ##
+## Munich will always belong to the exact same timezone)                                         ##
+##                                                                                               ##
+## Each file is a C library.                                                                     ##
+## To get the output of the file, you can use one of two commands; 'zdump' or 'file' :           ##
+##  > zdump /usr/share/zoneinfo/America/New_York                                                 ##
+##  > file /usr/share/zoneinfo/America/New_York                                                  ##
+##                                                                                               ##
+## Time zone database ref:                                                                       ##
+## https://en.wikipedia.org/wiki/List_of_tz_database_time_zones                                  ##
+##                                                                                               ##
+## ANSI escape codes: https://en.wikipedia.org/wiki/ANSI_escape_code                             ##
+## - https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux ##
+## - http://ascii-table.com/ansi-escape-sequences-vt-100.php                                     ##
+##                                                                                               ##
+###################################################################################################
+##                                                                                               ##
+## Set Color values to use and the No Color value #################################################
+##  Black        0;30     Dark Gray     1;30
+##  Red          0;31     Light Red     1;31
+##  Green        0;32     Light Green   1;32
+##  Brown/Orange 0;33     Yellow        1;33
+##  Blue         0;34     Light Blue    1;34
+##  Purple       0;35     Light Purple  1;35
+##  Cyan         0;36     Light Cyan    1;36
+##  Light Gray   0;37     White         1;37
+##
 RED='\033[0;31m'        # e.g. ${RED} $text ${NC}
 NC='\033[0m'            # No Color
-#
-# Set Bold values to use ##########################################################
-# The possible integers are:
-#   0 - Normal Style     # will cancel any color settings used
-#   1 - Bold
-#   2 - Dim
-#   3 - Italic
-#   4 - Underlined
-#   5 - Blinking
-#   7 - Reverse       # Back color / highlighter
-#   8 - Invisible        
-#
+##
+## Set Bold values to use #########################################################################
+## The possible integers are:
+##   0 - Normal Style     # will cancel any color settings used
+##   1 - Bold
+##   2 - Dim
+##   3 - Italic
+##   4 - Underlined
+##   5 - Blinking
+##   7 - Reverse       # Back color / highlighter
+##   8 - Invisible        
+##
 BoldON="\033[1m"             # ${BoldON}
 BoldOFF="\033[0m"            # ${BoldOFF}  
-#
-###################################################################################
-###################################################################################
+##
+###################################################################################################
+###################################################################################################
 
 
 zonedir="/usr/share/zoneinfo"
@@ -163,8 +165,9 @@ elif [[ "$OSTYPE" == "cygwin" ]]; then
   # POSIX compatibility layer and Linux environment emulation for Windows
 fi
 
-#
-####
-
-
 exit 0
+
+#                                                                                                 #
+###################################################################################################
+###################################################################################################
+
