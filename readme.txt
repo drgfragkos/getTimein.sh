@@ -30,8 +30,6 @@
 ## https://en.wikipedia.org/wiki/List_of_tz_database_time_zones                                  ##
 ##                                                                                               ##
 ## ANSI escape codes: https://en.wikipedia.org/wiki/ANSI_escape_code                             ##
-## - https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux ##
-## - http://ascii-table.com/ansi-escape-sequences-vt-100.php                                     ##
 ##                                                                                               ##
 ###################################################################################################
 
